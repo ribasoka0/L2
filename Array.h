@@ -5,7 +5,6 @@
 #include <new>
 #include <type_traits>
 #include <utility>
-#include <stdexcept>
 
 template <typename T>
 class Array final {
@@ -194,9 +193,7 @@ public:
     }
 
     int insert(int index, const T& value) {
-        if (index < 0 || index > length) {
-            throw std::out_of_range("Unable to insert, index is out of range.");
-        }
+        assert(index >= 0 && index <= length);
 
         if (length == current_capacity) {
             EnsureCapacity();
@@ -218,9 +215,7 @@ public:
     }
 
     int insert(int index, T&& value) {
-        if (index < 0 || index > length) {
-            throw std::out_of_range("Unable to insert, index is out of range.");
-        }
+        assert(index >= 0 && index <= length);
 
         if (length == current_capacity) {
             EnsureCapacity();
@@ -242,9 +237,7 @@ public:
     }
 
     void remove(int index) {
-        if (index < 0 || index >= length) {
-            throw std::out_of_range("Unable to remove, index is out of range.");
-        }
+        assert(index >= 0 && index < length);
 
         if (length > 0) {
             container[index].~T();
