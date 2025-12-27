@@ -10,8 +10,6 @@ template <typename T>
 class Array final {
 public:
     class Iterator {
-        friend class Array<T>;
-
     private:
         Array<T>& container;
         size_t index;
@@ -58,8 +56,6 @@ public:
     };
 
     class ConstIterator {
-        friend class Array<T>;
-
     private:
         const Array<T>& container;
         size_t index;
@@ -98,6 +94,9 @@ public:
     };
 
 private:
+    static constexpr int default_initial_capacity = 8;
+    static constexpr double growth_factor = 1.6;
+
     T* container;
     int length;
     int current_capacity;
@@ -113,7 +112,7 @@ private:
             return;
         }
 
-        int new_capacity = (current_capacity + 1) * 2;
+        int new_capacity = static_cast<int>(current_capacity * growth_factor) + 1;
         T* new_buf = (T*)malloc(new_capacity * sizeof(T));
         if (!new_buf) {
             throw std::bad_alloc();
@@ -137,7 +136,7 @@ private:
     }
 
 public:
-    Array() : Array(16) {}
+    Array() : Array(default_initial_capacity) {}
 
     explicit Array(int capacity) {
         container = (T*)malloc(capacity * sizeof(T));
