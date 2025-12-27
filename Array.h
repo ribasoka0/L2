@@ -286,10 +286,10 @@ public:
     }
 
     Iterator reverseIterator() {
-        return Iterator(*this, length - 1, true);
+        return Iterator(*this, length > 0 ? length - 1 : 0, true);
     }
 
     ConstIterator reverseIterator() const {
-        return ConstIterator(*this, length - 1, true);
+        return ConstIterator(*this, length > 0 ? length - 1 : 0, true);
     }
 };
